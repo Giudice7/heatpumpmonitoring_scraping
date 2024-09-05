@@ -1,3 +1,4 @@
+import os
 import json
 import pytz
 import datetime
@@ -69,6 +70,9 @@ def fetch_data(id_hp: int, app_url: str, start: str, end: str):
     result_df = result_df.rename(columns=feed_info)
     result_df.reset_index(inplace=True)
     result_df['timestamp'] = pd.to_datetime(result_df['timestamp'], unit='ms')
+
+    if not os.path.exists('../data'):
+        os.makedirs('../data')
 
     result_df.to_csv(f'../data/{id_hp}.csv', index=False)
     with open(f'../data/{id_hp}.json', 'w') as f:
